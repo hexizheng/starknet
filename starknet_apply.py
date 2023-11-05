@@ -151,11 +151,6 @@ def removeliquidity_myswap(my_account):
     # usdc-eth 池子 pool id 是 1
     totalshares = (contract.functions["get_total_shares"].call_sync(1)).total_shares
     myshares = (contract.functions["get_lp_balance"].call_sync(1,my_account.address)).shares
-    if myshares == 0:
-        print("当前没有池子，返回")
-        log.info("当前没有池子， 改为加池子操作")
-        addliquidity_myswap(my_account)
-        return
     pool = contract.functions["get_pool"].call_sync(1)
     token_a_reserves = pool.pool['token_a_reserves']
     token_b_reserves = pool.pool['token_b_reserves']
@@ -174,7 +169,7 @@ def removeliquidity_myswap(my_account):
     log.info("交易结果：" + str(hex(response.transaction_hash)))
 
 
-# usdc 换一部分成为eth
+# usdc 换成eth
 def swap_myswap_usdc2eth(my_account,amount_in):
     log.info("开始myswap 部分usdc2eth交易：")
     log.info("账户地址:" + str(hex(my_account.address)))
